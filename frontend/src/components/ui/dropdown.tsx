@@ -7,11 +7,13 @@ import { MoreVertical } from 'lucide-react';
 export function Dropdown({ 
   triggerIcon = <MoreVertical className="h-5 w-5" />,
   children,
-  className
+  className,
+  triggerClassName
 }: { 
   triggerIcon?: React.ReactNode,
   children: React.ReactNode,
-  className?: string 
+  className?: string,
+  triggerClassName?: string
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -30,7 +32,7 @@ export function Dropdown({
     <div className={cn("relative inline-block text-left", className)} ref={ref}>
       <button 
         onClick={(e) => { e.preventDefault(); e.stopPropagation(); setIsOpen(!isOpen); }}
-        className="p-1.5 rounded-md hover:bg-zinc-100 text-zinc-500 transition-colors"
+        className={triggerClassName || "p-1.5 rounded-md hover:bg-zinc-100 text-zinc-500 transition-colors"}
       >
         {triggerIcon}
       </button>

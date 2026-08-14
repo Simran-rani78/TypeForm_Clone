@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react"
 import { Download, Table as TableIcon, BarChart, Trash2, Eye, X, Activity, Users, CheckCircle2, Diamond, Calendar, ChevronDown, Monitor, ArrowDown, User, Sparkles, LayoutTemplate } from "lucide-react"
 import toast from "react-hot-toast"
 import { Button } from "@/components/ui/button"
+import { Dropdown, DropdownItem } from "@/components/ui/dropdown"
 import { cn } from "@/lib/utils"
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api"
@@ -115,12 +116,52 @@ export function ResultsTab({ formId }: { formId: string }) {
         {}
         {activeSubTab !== 'smart_insights' && (
           <div className="px-8 py-4 flex items-center gap-3">
-            <button className="flex items-center gap-2 text-sm font-medium text-zinc-700 bg-white border border-zinc-200 px-3 py-1.5 rounded-md hover:bg-zinc-50 shadow-sm">
-              All time <Calendar className="w-4 h-4 ml-1" />
-            </button>
-            <button className="flex items-center gap-2 text-sm font-medium text-zinc-700 bg-white border border-zinc-200 px-3 py-1.5 rounded-md hover:bg-zinc-50 shadow-sm">
-              <Monitor className="w-4 h-4 mr-1" /> All devices <ChevronDown className="w-3.5 h-3.5 ml-1" />
-            </button>
+            <Dropdown 
+              triggerClassName="flex items-center gap-2 text-sm font-medium text-zinc-700 bg-white border border-zinc-200 px-3 py-1.5 rounded-md hover:bg-zinc-50 shadow-sm"
+              triggerIcon={<>All time <Calendar className="w-4 h-4 ml-1" /></>}
+            >
+              <div className="flex w-[450px] p-2">
+                <div className="w-1/3 border-r border-zinc-100 pr-2 space-y-1">
+                  <DropdownItem className="rounded-md bg-zinc-100 font-medium">All time</DropdownItem>
+                  <DropdownItem className="rounded-md">Today</DropdownItem>
+                  <DropdownItem className="rounded-md">Last week</DropdownItem>
+                  <DropdownItem className="rounded-md">Last month</DropdownItem>
+                  <DropdownItem className="rounded-md">Last year</DropdownItem>
+                </div>
+                <div className="w-2/3 pl-6 pt-2">
+                  <div className="flex justify-between items-center mb-4 text-sm font-medium">
+                    <button className="p-1 hover:bg-zinc-100 rounded text-zinc-500">&lt;</button>
+                    August 2026
+                    <button className="p-1 hover:bg-zinc-100 rounded text-zinc-500">&gt;</button>
+                  </div>
+                  <div className="grid grid-cols-7 gap-1 text-center text-xs text-zinc-500 mb-2">
+                    <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+                  </div>
+                  <div className="grid grid-cols-7 gap-y-3 gap-x-1 text-center text-sm">
+                    <div className="text-zinc-300">26</div><div className="text-zinc-300">27</div><div className="text-zinc-300">28</div><div className="text-zinc-300">29</div><div className="text-zinc-300">30</div><div className="text-zinc-300">31</div><div>1</div>
+                    <div>2</div><div>3</div><div>4</div><div>5</div><div>6</div><div>7</div><div>8</div>
+                    <div>9</div><div>10</div><div>11</div><div>12</div><div>13</div><div className="bg-[#312b36] text-white rounded-md mx-1 font-medium">14</div><div>15</div>
+                    <div>16</div><div>17</div><div>18</div><div>19</div><div>20</div><div>21</div><div>22</div>
+                    <div>23</div><div>24</div><div>25</div><div>26</div><div>27</div><div>28</div><div>29</div>
+                    <div>30</div><div>31</div><div className="text-zinc-300">1</div><div className="text-zinc-300">2</div><div className="text-zinc-300">3</div><div className="text-zinc-300">4</div><div className="text-zinc-300">5</div>
+                  </div>
+                  <div className="flex justify-end mt-4 pt-4 gap-2">
+                    <button className="px-3 py-1.5 text-sm font-medium text-zinc-600 hover:text-zinc-900">Cancel</button>
+                    <button className="px-4 py-1.5 text-sm font-medium bg-[#312b36] text-white rounded-md">Apply</button>
+                  </div>
+                </div>
+              </div>
+            </Dropdown>
+
+            <Dropdown 
+              triggerClassName="flex items-center gap-2 text-sm font-medium text-zinc-700 bg-white border border-zinc-200 px-3 py-1.5 rounded-md hover:bg-zinc-50 shadow-sm"
+              triggerIcon={<><Monitor className="w-4 h-4 mr-1" /> All devices <ChevronDown className="w-3.5 h-3.5 ml-1" /></>}
+            >
+              <DropdownItem>Mobile</DropdownItem>
+              <DropdownItem>Desktop</DropdownItem>
+              <DropdownItem>Tablet</DropdownItem>
+              <DropdownItem>Other</DropdownItem>
+            </Dropdown>
           </div>
         )}
 

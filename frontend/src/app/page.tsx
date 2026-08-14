@@ -237,9 +237,14 @@ export default function Dashboard() {
                   </div>
                   
                   <div className="flex items-center gap-4">
-                    <button className="flex items-center gap-2 text-sm font-medium text-zinc-600 hover:text-zinc-900 bg-white border border-zinc-200 px-3 py-1.5 rounded-md">
-                      <Calendar className="w-4 h-4" /> Date created <ChevronDown className="w-3.5 h-3.5 ml-1" />
-                    </button>
+                    <Dropdown 
+                      triggerClassName="flex items-center gap-2 text-sm font-medium text-zinc-600 hover:text-zinc-900 bg-white border border-zinc-200 px-3 py-1.5 rounded-md"
+                      triggerIcon={<><Calendar className="w-4 h-4" /> Date created <ChevronDown className="w-3.5 h-3.5 ml-1" /></>}
+                    >
+                      <DropdownItem>Date created</DropdownItem>
+                      <DropdownItem>Last updated</DropdownItem>
+                      <DropdownItem>Alphabetical</DropdownItem>
+                    </Dropdown>
                     <div className="flex bg-white rounded-md p-1 border border-zinc-200 shadow-sm">
                       <button 
                         onClick={() => setViewMode('list')}
