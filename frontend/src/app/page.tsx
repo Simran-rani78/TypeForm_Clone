@@ -15,7 +15,6 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Modal } from "@/components/ui/modal"
 import { Dropdown, DropdownItem } from "@/components/ui/dropdown"
 import { Logo } from "@/components/ui/logo"
 import { fetchForms, createForm, deleteForm, updateFormTitle, duplicateFormApi } from "@/lib/api"
@@ -32,9 +31,6 @@ export default function Dashboard() {
   
   const [activeGlobalTab, setActiveGlobalTab] = useState<'forms' | 'contacts' | 'automations' | 'research'>('forms')
 
-  
-  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
-  const [newFormTitle, setNewFormTitle] = useState("")
   const [isCreating, setIsCreating] = useState(false)
   const [viewMode, setViewMode] = useState<'list' | 'grid'>('list')
   const [searchQuery, setSearchQuery] = useState("")
@@ -63,17 +59,12 @@ export default function Dashboard() {
     return () => window.removeEventListener("focus", onFocus)
   }, [])
 
-  const handleCreateForm = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!newFormTitle.trim()) return
-
+  const handleCreateForm = async () => {
     setIsCreating(true)
     try {
-      const form = await createForm(newFormTitle)
+      const form = await createForm("My branded typeform")
       setForms([form, ...forms])
       toast.success("Form created successfully")
-      setIsCreateModalOpen(false)
-      setNewFormTitle("")
       router.refresh()
       router.push(`/builder/${form.id}`)
     } catch (error) {
@@ -169,10 +160,11 @@ export default function Dashboard() {
             <aside className="w-[260px] bg-white border-r border-zinc-200 flex flex-col shrink-0">
               <div className="p-4 pb-2">
                 <button 
-                  onClick={() => setIsCreateModalOpen(true)}
-                  className="w-full bg-[#312b36] hover:bg-[#252129] transition-colors text-white rounded-md py-2.5 flex justify-center items-center gap-2 font-semibold text-sm"
+                  onClick={handleCreateForm}
+                  disabled={isCreating}
+                  className="w-full bg-[#312b36] hover:bg-[#252129] disabled:opacity-70 transition-colors text-white rounded-md py-2.5 flex justify-center items-center gap-2 font-semibold text-sm"
                 >
-                  <Plus className="w-4 h-4" /> Create form
+                  <Plus className="w-4 h-4" /> {isCreating ? 'Creating...' : 'Create form'}
                 </button>
               </div>
               
@@ -307,8 +299,8 @@ export default function Dashboard() {
                   <div className="flex flex-col items-center justify-center h-64 border border-zinc-200 rounded-xl bg-white shadow-sm">
                     <h3 className="text-lg font-medium text-zinc-900">No forms yet</h3>
                     <p className="text-zinc-500 mb-6 text-sm mt-1">Create your first form.</p>
-                    <Button onClick={() => setIsCreateModalOpen(true)} className="bg-zinc-900 hover:bg-zinc-800 text-white rounded-md">
-                      <Plus className="w-4 h-4 mr-2" /> Create form
+                    <Button onClick={handleCreateForm} disabled={isCreating} className="bg-zinc-900 hover:bg-zinc-800 text-white rounded-md">
+                      <Plus className="w-4 h-4 mr-2" /> {isCreating ? 'Creating...' : 'Create form'}
                     </Button>
                   </div>
                 ) : viewMode === 'list' ? (
@@ -660,51 +652,6 @@ export default function Dashboard() {
 
       </div>
 
-      {}
-      <Modal
-        isOpen={isCreateModalOpen}
-        onClose={() => setIsCreateModalOpen(false)}
-        title="Create a new typeform"
-      >
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-          <div className="border-2 border-blue-600 rounded-xl p-6 flex flex-col items-center text-center cursor-pointer bg-blue-50/50">
-            <Plus className="w-8 h-8 text-blue-600 mb-3" />
-            <h4 className="font-semibold">Start from scratch</h4>
-            <p className="text-xs text-zinc-500 mt-2">Create a blank form</p>
-          </div>
-          <div className="border border-zinc-200 rounded-xl p-6 flex flex-col items-center text-center cursor-not-allowed bg-zinc-50 opacity-60">
-            <Copy className="w-8 h-8 text-zinc-400 mb-3" />
-            <h4 className="font-semibold">Templates</h4>
-            <p className="text-xs text-zinc-500 mt-2">Coming Soon</p>
-          </div>
-          <div className="border border-zinc-200 rounded-xl p-6 flex flex-col items-center text-center cursor-not-allowed bg-zinc-50 opacity-60">
-            <Activity className="w-8 h-8 text-zinc-400 mb-3" />
-            <h4 className="font-semibold">Create with AI</h4>
-            <p className="text-xs text-zinc-500 mt-2">Coming Soon</p>
-          </div>
-        </div>
-        <form onSubmit={handleCreateForm} className="space-y-6 pt-4 border-t border-zinc-200">
-          <div className="space-y-2">
-            <Label htmlFor="title" className="font-semibold">Give it a name</Label>
-            <Input
-              id="title"
-              placeholder="e.g. Customer Satisfaction Survey"
-              value={newFormTitle}
-              onChange={(e) => setNewFormTitle(e.target.value)}
-              autoFocus
-              className="h-12 text-lg"
-            />
-          </div>
-          <div className="flex justify-end space-x-2">
-            <Button type="button" variant="ghost" onClick={() => setIsCreateModalOpen(false)}>
-              Cancel
-            </Button>
-            <Button type="submit" disabled={isCreating || !newFormTitle.trim()} className="bg-blue-600 hover:bg-blue-700 text-white">
-              {isCreating ? "Creating..." : "Continue"}
-            </Button>
-          </div>
-        </form>
-      </Modal>
       
       <DeleteConfirmModal
         isOpen={!!formToDelete}
