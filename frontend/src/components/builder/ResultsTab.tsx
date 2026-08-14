@@ -119,6 +119,7 @@ export function ResultsTab({ formId }: { formId: string }) {
             <Dropdown 
               triggerClassName="flex items-center gap-2 text-sm font-medium text-zinc-700 bg-white border border-zinc-200 px-3 py-1.5 rounded-md hover:bg-zinc-50 shadow-sm"
               triggerIcon={<>All time <Calendar className="w-4 h-4 ml-1" /></>}
+              dropdownClassName="left-0 w-max"
             >
               <div className="flex w-[450px] p-2">
                 <div className="w-1/3 border-r border-zinc-100 pr-2 space-y-1">
@@ -156,6 +157,7 @@ export function ResultsTab({ formId }: { formId: string }) {
             <Dropdown 
               triggerClassName="flex items-center gap-2 text-sm font-medium text-zinc-700 bg-white border border-zinc-200 px-3 py-1.5 rounded-md hover:bg-zinc-50 shadow-sm"
               triggerIcon={<><Monitor className="w-4 h-4 mr-1" /> All devices <ChevronDown className="w-3.5 h-3.5 ml-1" /></>}
+              dropdownClassName="left-0"
             >
               <DropdownItem>Mobile</DropdownItem>
               <DropdownItem>Desktop</DropdownItem>

@@ -8,12 +8,14 @@ export function Dropdown({
   triggerIcon = <MoreVertical className="h-5 w-5" />,
   children,
   className,
-  triggerClassName
+  triggerClassName,
+  dropdownClassName
 }: { 
   triggerIcon?: React.ReactNode,
   children: React.ReactNode,
   className?: string,
-  triggerClassName?: string
+  triggerClassName?: string,
+  dropdownClassName?: string
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -40,7 +42,7 @@ export function Dropdown({
       {isOpen && (
         <div 
           onClick={(e) => { e.stopPropagation(); setIsOpen(false); }}
-          className="absolute right-0 mt-1 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50 flex flex-col py-1"
+          className={cn("absolute mt-1 rounded-md shadow-[0_4px_20px_-4px_rgba(0,0,0,0.1)] bg-white ring-1 ring-black ring-opacity-5 z-50 flex flex-col py-1", dropdownClassName || "right-0 w-48")}
         >
           {children}
         </div>

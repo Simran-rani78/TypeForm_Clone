@@ -230,7 +230,14 @@ export default function Dashboard() {
                 <div className="flex items-center justify-between mb-8">
                   <div className="flex items-center gap-4">
                     <h1 className="text-2xl font-normal text-zinc-800 tracking-tight">My workspace</h1>
-                    <button className="text-zinc-400 hover:text-zinc-600"><MoreHorizontal className="w-5 h-5" /></button>
+                    <Dropdown 
+                      triggerIcon={<MoreHorizontal className="w-5 h-5" />}
+                      dropdownClassName="left-0"
+                    >
+                      <DropdownItem>Rename</DropdownItem>
+                      <DropdownItem>Leave</DropdownItem>
+                      <DropdownItem danger>Delete</DropdownItem>
+                    </Dropdown>
                     <button className="flex items-center gap-2 text-sm font-medium text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 px-3 py-1.5 rounded-md transition-colors">
                       <Users className="w-4 h-4" /> Invite <Diamond className="w-3.5 h-3.5 text-teal-600 ml-1" />
                     </button>
