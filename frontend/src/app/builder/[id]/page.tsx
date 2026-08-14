@@ -31,7 +31,9 @@ import { ConnectTab } from "@/components/builder/ConnectTab"
 import { ShareTab } from "@/components/builder/ShareTab"
 import { ResultsTab } from "@/components/builder/ResultsTab"
 import { AddQuestionModal } from "@/components/builder/AddQuestionModal"
+import { PublishSuccessAnimation } from "@/components/builder/PublishSuccessAnimation"
 import { Logo } from "@/components/ui/logo"
+import { AnimatePresence } from "framer-motion"
 
 const QUESTION_TYPES = [
   { value: "short_text", label: "Short Text" },
@@ -59,6 +61,7 @@ export default function BuilderPage({ params }: { params: Promise<{ id: string }
   
   const [activeTopTab, setActiveTopTab] = useState<'content' | 'workflow' | 'connect' | 'share' | 'results'>('content')
   const [isPublishing, setIsPublishing] = useState(false)
+  const [showSuccessAnimation, setShowSuccessAnimation] = useState(false)
   const [activeSidebarTab, setActiveSidebarTab] = useState<'question' | 'design'>('question')
   const [isAddQuestionModalOpen, setIsAddQuestionModalOpen] = useState(false)
   
@@ -170,23 +173,20 @@ export default function BuilderPage({ params }: { params: Promise<{ id: string }
   }
 
   const handleShare = async () => {
-    setIsPublishing(true)
-    
-    
     if (!isLive || hasUnpublishedChanges) {
+      setIsPublishing(true)
       try {
         const updated = await updateFormStatus(form.id, 'published')
         setForm({ ...form, status: updated.status, published_at: updated.published_at })
+        setIsPublishing(false)
+        setShowSuccessAnimation(true)
       } catch (error) {
         toast.error("Failed to publish")
+        setIsPublishing(false)
       }
-    }
-    
-    
-    setTimeout(() => {
-      setIsPublishing(false)
+    } else {
       setActiveTopTab('share')
-    }, 1500)
+    }
   }
 
   const handleUpdateTheme = async (themeKey: string, value: string) => {
@@ -373,7 +373,7 @@ export default function BuilderPage({ params }: { params: Promise<{ id: string }
                  Publishing...
               </span>
             ) : (
-              'Share'
+              (!isLive || hasUnpublishedChanges) ? 'Publish' : 'Share'
             )}
           </Button>
 
@@ -745,6 +745,17 @@ export default function BuilderPage({ params }: { params: Promise<{ id: string }
         onClose={() => setIsAddQuestionModalOpen(false)}
         onAddQuestion={handleAddQuestion}
       />
+
+      <AnimatePresence>
+        {showSuccessAnimation && (
+          <PublishSuccessAnimation 
+            onComplete={() => {
+              setShowSuccessAnimation(false)
+              setActiveTopTab('share')
+            }} 
+          />
+        )}
+      </AnimatePresence>
     </div>
   )
 }
