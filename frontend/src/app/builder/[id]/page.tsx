@@ -615,7 +615,12 @@ export default function BuilderPage({ params }: { params: Promise<{ id: string }
 
                     <div className="space-y-5 pt-2">
                       <div className="flex items-center justify-between">
-                        <Label htmlFor="required-toggle" className="cursor-pointer font-medium text-sm text-zinc-700">Required</Label>
+                        <Label 
+                          className="cursor-pointer font-medium text-sm text-zinc-700"
+                          onClick={(e) => handleUpdateQuestion(activeQuestion.id, { is_required: !activeQuestion.is_required })}
+                        >
+                          Required
+                        </Label>
                         <div className={`w-8 h-4 flex items-center bg-zinc-200 rounded-full p-0.5 cursor-pointer ${activeQuestion.is_required ? 'bg-zinc-900' : ''}`} onClick={(e) => handleUpdateQuestion(activeQuestion.id, { is_required: !activeQuestion.is_required })}>
                           <div className={`bg-white w-3 h-3 rounded-full shadow-md transform transition-transform ${activeQuestion.is_required ? 'translate-x-4' : ''}`} />
                         </div>

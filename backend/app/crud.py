@@ -142,6 +142,7 @@ def update_question(db: Session, question_id: str, question_update: schemas.Ques
     for key, value in update_data.items():
         setattr(db_question, key, value)
         
+    db.commit()
     db.refresh(db_question)
     return db_question
 
